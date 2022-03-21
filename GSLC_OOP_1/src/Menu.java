@@ -2,8 +2,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
-	
+	static String nama;
+	static String pass;
+	static String num;
 	static Scanner sc = new Scanner(System.in);
+	static boolean valPhone;
+	static boolean valPass;
+	static boolean valName;
 	
 	public static void printMenu() {
 		System.out.println("1. Input Data");
@@ -14,7 +19,19 @@ public class Menu {
 	}
 	
 	public static void inputData(ArrayList<Data> datas) {
-		
+		do {
+			System.out.print("Input your name >> ");
+			nama = sc.nextLine();
+			System.out.print("Input your password (use at least one capital letter) >> ");
+			pass = sc.nextLine();
+			System.out.print("Input your phone number (use number only with length 10 - 12) >> ");
+			num = sc.nextLine();
+			valPhone = Data.validatePhone(num);
+			valName = Data.validateName(nama);
+			valPass = Data.validatePassword(pass);
+		}while(valPhone == false || valName == false || valPass == false);
+		datas.add(new Data(nama,pass,num));
+		System.out.println("New data is added");
 	}
 	
 	public static void showData(ArrayList<Data> datas) {
