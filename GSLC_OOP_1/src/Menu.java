@@ -2,79 +2,105 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
-	static String nama;
-	static String pass;
-	static String num;
-	static Scanner sc = new Scanner(System.in);
-	static boolean valPhone;
-	static boolean valPass;
-	static boolean valName;
+	private ArrayList<Data> datas;
+	private Scanner sc = new Scanner(System.in);
+
+	public Menu(ArrayList<Data> datas) {
+		this.datas = datas;
+	}
+
+	public void viewMenu() {
+		int choice = -1;
+		while(choice != 4) {
+			printMenu();
+			choice = sc.nextInt(); sc.nextLine();
+			if(choice == 1) {
+				inputData();
+			}else if (choice == 2) {
+				showData();
+			}else if (choice == 3) {
+				deleteData();
+			}else if (choice == 4) {
+				System.out.println("Exited Program");
+			}
+		}
+	}
 	
-	public static void printMenu() {
+	public void printMenu() {
 		System.out.println("1. Input Data");
 		System.out.println("2. Show Data");
 		System.out.println("3. Delete Data");
-		System.out.println("4. Exit Data");
+		System.out.println("4. Exit");
 		System.out.print("Your Choice: ");
 	}
 	
-	public static void inputData(ArrayList<Data> datas) {
-		do {
+	public void inputData() {
+		String name = "", password = "", phone = "";
+		
+		while(!Data.validateName(name)) {
 			System.out.print("Input your name >> ");
-			nama = sc.nextLine();
+			name = sc.nextLine();
+		}
+
+		while(!Data.validatePassword(password)) {
 			System.out.print("Input your password (use at least one capital letter) >> ");
-			pass = sc.nextLine();
+			password = sc.nextLine();
+		}
+
+		while(!Data.validatePhone(phone)) {
 			System.out.print("Input your phone number (use number only with length 10 - 12) >> ");
-			num = sc.nextLine();
-			valPhone = Data.validatePhone(num);
-			valName = Data.validateName(nama);
-			valPass = Data.validatePassword(pass);
-		}while(valPhone == false || valName == false || valPass == false);
-		datas.add(new Data(nama,pass,num));
+			phone = sc.nextLine();
+		}
+
+		datas.add(new Data(name, password, phone));
 		System.out.println("New data is added");
 	}
 	
-	public static void showData(ArrayList<Data> datas) {
+	public void showData() {
 		System.out.println("===================================================");
 		System.out.printf("|%3s| %12s| %12s| %12s|\n", "No", "Name", "Pass", "Phone");
 		System.out.println("===================================================");
 		
 		if (datas.size() == 0) {
 			System.out.println("        No Data Existed");
-		}else {
-			for(int i = 0; i < datas.size(); i++) {//keknya harus di bikin pake printF
-			//System.out.println(i+1 + "   " + datas.get(i).getName()+ "   "+
-			//datas.get(i).getPassword()+ "   " +  datas.get(i).getPhone());
-				System.out.printf("|%3d| %12s| %12s| %12s|\n", i+1, datas.get(i).getName(), datas.get(i).getPassword(),  datas.get(i).getPhone());
-			}// kalo mo dibikin printData di class Data bisa sih, biar nanti tinggal datas.get(i).printData()
+		} else {
+			for(int i = 0; i < datas.size(); i++) {
+				Data data = datas.get(i);
+				System.out.printf("|%3d| %12s| %12s| %12s|\n", i+1, data.getName(), data.getPassword(),  data.getPhone());
+			}
 		}
 		System.out.println("===================================================");
 		return;
 	}
 	
-	public static void deleteData(ArrayList<Data> datas) {
+	public  void deleteData() {
 		int idx = -1;
-		showData(datas);
-		while(!validIndex(idx, datas)) {
+		showData();
+		while(!validIndex(idx - 1)) {
 			System.out.print("Input data number to be deleted: ");
 			idx = sc.nextInt(); sc.nextLine();
-			if(!validIndex(idx, datas)) {
+			if(!validIndex(idx - 1)) {
 				System.out.println("Invalid index!");
 			}
 		}
+
+		String confirm = "";
+		while(!(confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("no"))) {
+			System.out.print("Are you sure you want to delete this data? [yes | no]: ");
+			confirm = sc.nextLine();
+		}
+		
+		if(confirm.equalsIgnoreCase("no")) {
+			System.out.println("Data is not removed");
+			return;
+		}
+		
 		datas.remove(idx-1);
 		System.out.println("Data is removed");
-		return;
 	}
 	
 //	Validasi Index
-	private static boolean validIndex(int idx, ArrayList<Data> datas) {
-		if(idx < 0 || idx > datas.size()) {
-			return false;
-		}
-		return true;
+	private boolean validIndex(int idx) {
+		return idx > 0 && idx < datas.size();
 	}
-	
-
-	
 }
