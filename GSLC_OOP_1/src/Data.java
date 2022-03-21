@@ -6,7 +6,6 @@ public class Data {
 	
 //	Constructor
 	public Data(String name, String password, String phone) {
-		super();
 		this.name = name;
 		this.password = password;
 		this.phone = phone;
@@ -40,11 +39,33 @@ public class Data {
 	}
 	
 //	Validation
-	public boolean validatePhone(String phone) {
+	public static boolean validatePhone(String phone) {
 		if(phone.length() < 10 && phone.length() > 12)return false; //check panjang nomor hp
 		if(!phone.matches("[0-9]+")) return false; //check hanya angka
 		return true;
 	}
-	
-	
+
+	public static boolean validatePassword(String password) {
+		if(password.length() < 5) {
+			return false;
+		}
+		else if(password.contains(" ")){
+			return false;
+		}
+		else {
+			char [] arr = password.toCharArray();
+			for (int i = 0; i < arr.length; i++) {
+				if(Character.isUpperCase(arr[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public static boolean validateName(String name) {
+			if(name.matches("[a-zA-Z]+") == false) {
+				return false;
+			}
+			return true;
+	}	
 }
