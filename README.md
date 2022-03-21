@@ -1,8 +1,8 @@
 # OOP_Lec
 ### Anggota Kelompok
 
-1. Abc
-2. Abc
+1. Wendy Oei - 2440048024
+2. Ryanto - 2440046965
 3. Oliver Chico - 2440055635
 4. Kevin Bryan - 2440038490
 
